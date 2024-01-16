@@ -5,7 +5,7 @@ import AgentForm from "./components/forms/AgentForm";
 import TicketCard from "./components/cards/TicketCard";
 import FilterModal from "./components/filters/FilterModal";
 import "tailwindcss/tailwind.css";
-import "./App.css";
+import "./index.css";
 
 function App() {
   const [isTicketModalOpen, setTicketModalOpen] = useState(false);
@@ -133,7 +133,9 @@ function App() {
         onSubmit={applyFilters}
       />
 
-      <h2 className="text-2xl font-bold mt-4">Support Tickets</h2>
+      <h2 className="text-5xl text-orange-800 font-bold mt-4">
+        Support Tickets
+      </h2>
       {tickets.length > 0 ? (
         tickets.map((ticket, index) => (
           <TicketCard key={index} ticket={ticket} />
