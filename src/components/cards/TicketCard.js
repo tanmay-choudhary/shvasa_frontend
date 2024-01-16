@@ -2,14 +2,16 @@ import React from "react";
 
 const TicketCard = ({ ticket }) => {
   return (
-    <div style={{ border: "1px solid #ddd", padding: "10px", margin: "10px" }}>
-      <h3>{ticket.topic}</h3>
-      <p>Description: {ticket.description}</p>
-      <p>Severity: {ticket.severity}</p>
-      <p>Type: {ticket.type}</p>
-      <p>Status: {ticket.status}</p>
-      <p>Assigned To: {ticket.assignedTo}</p>
-      {ticket.resolvedOn && <p>Resolved On: {ticket.resolvedOn}</p>}
+    <div className="border border-blue-500 p-4 m-4 rounded-lg">
+      <h3 className="text-xl font-bold mb-2">{ticket.topic}</h3>
+      <p className="mb-2">Description: {ticket.description}</p>
+      <p className="mb-2">Severity: {ticket.severity}</p>
+      <p className="mb-2">Type: {ticket.type}</p>
+      <p className="mb-2">Status: {ticket.status}</p>
+      <p className="mb-2">Assigned To: {ticket.assignedTo}</p>
+      {ticket.resolvedOn && (
+        <p className="mb-2">Resolved On: {ticket.resolvedOn}</p>
+      )}
     </div>
   );
 };
