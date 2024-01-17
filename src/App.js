@@ -11,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/agents" element={<Agents />} />
+        <Route path="/" element={<Agents />} />
       </Routes>
     </Router>
   );
