@@ -1,2 +1,2 @@
-//export const API_URL = "https://dev-api.jobscout.work";
-export const API_URL = "http://localhost:8080";
+export const API_URL = "https://shvasa-backend.onrender.com";
+//export const API_URL = "http://localhost:8080";
