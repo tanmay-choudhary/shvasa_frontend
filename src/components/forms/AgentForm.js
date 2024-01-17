@@ -22,54 +22,58 @@ const AgentForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <div>
-      <h2>Create Agent</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className="p-4 border rounded-md shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Create Agent</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block">
           Name:
           <input
             type="text"
             name="name"
             value={agentForm.name}
             onChange={handleAgentChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </label>
-        <br />
-        <label>
+
+        <label className="block">
           Email:
           <input
             type="email"
             name="email"
             value={agentForm.email}
             onChange={handleAgentChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </label>
-        <br />
-        <label>
+
+        <label className="block">
           Phone:
           <input
             type="text"
             name="phone"
             value={agentForm.phone}
             onChange={handleAgentChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </label>
-        <br />
-        <label>
+
+        <label className="block">
           Description:
           <input
             type="text"
             name="description"
             value={agentForm.description}
             onChange={handleAgentChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </label>
-        <br />
-        <label>
+
+        <label className="block">
           Active:
           <input
             type="checkbox"
@@ -81,12 +85,25 @@ const AgentForm = ({ onSubmit, onClose }) => {
                 active: !agentForm.active,
               })
             }
+            className="form-checkbox mt-1"
           />
         </label>
-        <br />
-        <button type="submit">Submit</button>
+
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Submit
+          </button>
+          <button
+            onClick={onClose}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
       </form>
-      <button onClick={onClose}>Close</button>
     </div>
   );
 };

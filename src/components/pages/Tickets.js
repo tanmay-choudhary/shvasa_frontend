@@ -38,7 +38,7 @@ const Tickets = () => {
 
   const assignTicket = async (id) => {
     try {
-      const response = await MakeApiCall("POST", "/api/assign-tickets", {
+      const response = await MakeApiCall("PATCH", "/api/assign-tickets", {
         ticketId: id,
       });
 

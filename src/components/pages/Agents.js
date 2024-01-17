@@ -1,105 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalWrapper from "../ModalWrapper";
-import TicketForm from "../forms/TicketForm";
 import AgentForm from "../forms/AgentForm";
-import TicketCard from "../cards/TicketCard";
-import FilterModal from "../filters/FilterModal";
+import AgentCard from "../cards/AgentCard";
+import AgentTicket from "../cards/AgentTicket";
+import MakeApiCall from "../utils/MakeApiCall";
 import "tailwindcss/tailwind.css";
 
 const Agents = () => {
-  const [isTicketModalOpen, setTicketModalOpen] = useState(false);
   const [isAgentModalOpen, setAgentModalOpen] = useState(false);
-  const [isFilterModalOpen, setFilterModalOpen] = useState(false);
-  const [tickets, setTickets] = useState([
-    {
-      id: "1",
-      topic: "Login Issue",
-      description: "Unable to log in to the system.",
-      severity: "High",
-      type: "Bug",
-      assignedTo: "Agent001",
-      status: "New",
-      resolvedOn: null,
-      dateCreated: new Date("2022-01-01"),
-    },
-    {
-      id: "2",
-      topic: "Feature Request",
-      description: "Request for a new feature.",
-      severity: "Medium",
-      type: "Enhancement",
-      assignedTo: "Agent002",
-      status: "Assigned",
-      resolvedOn: null,
-      dateCreated: new Date("2022-01-05"),
-    },
-  ]);
-
-  const openTicketModal = () => setTicketModalOpen(true);
-  const closeTicketModal = () => setTicketModalOpen(false);
+  const [isAgentTicketModalOpen, setAgentTicketModalOpen] = useState(false);
+  const [boolean, setBoolean] = useState(true);
+  const [agents, setAgents] = useState([]);
+  const [agentTickets, setAgentTickets] = useState([]);
 
   const openAgentModal = () => setAgentModalOpen(true);
   const closeAgentModal = () => setAgentModalOpen(false);
+  const openAgentTicketModal = () => setAgentTicketModalOpen(true);
+  const closeAgentTicketModal = () => setAgentTicketModalOpen(false);
+  const submitAgentForm = async (agentData) => {
+    //console.log("Submitting Agent Form:", agentData);
+    let date = new Date();
+    let obj = {
+      name: agentData.name,
+      email: agentData.email,
+      phone: agentData.phone,
+      description: agentData.description,
+      active: agentData.active,
+      dateCreated: date,
+    };
+    //console.log("Submitting Agent Form:", obj);
 
-  const openFilterModal = () => setFilterModalOpen(true);
-  const closeFilterModal = () => setFilterModalOpen(false);
-
-  const submitTicketForm = (ticketData) => {
-    console.log("Submitting Ticket Form:", ticketData);
-    setTickets([...tickets, ticketData]);
-    closeTicketModal();
-  };
-
-  const submitAgentForm = (agentData) => {
-    console.log("Submitting Agent Form:", agentData);
+    await addAgents(obj);
     closeAgentModal();
   };
 
-  const applyFilters = (filterData) => {
-    console.log("Applying Filters:", filterData);
-    const filteredTickets = tickets.filter((ticket) => {
-      return (
-        (filterData.status
-          ? ticket.status.includes(filterData.status)
-          : true) &&
-        (filterData.assignedTo
-          ? ticket.assignedTo.includes(filterData.assignedTo)
-          : true) &&
-        (filterData.severity
-          ? ticket.severity.includes(filterData.severity)
-          : true) &&
-        (filterData.type ? ticket.type.includes(filterData.type) : true)
-      );
-    });
-
-    const sortedTickets = filteredTickets.sort((a, b) => {
-      if (filterData.sortField === "resolvedOn") {
-        return (
-          new Date(b.resolvedOn || 0).getTime() -
-          new Date(a.resolvedOn || 0).getTime()
-        );
-      } else if (filterData.sortField === "dateCreated") {
-        return (
-          new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
-        );
-      }
-      return 0;
-    });
-
-    setTickets(sortedTickets);
-    closeFilterModal();
+  const addAgents = async (obj) => {
+    try {
+      const response = await MakeApiCall("POST", "/api/support-agents", obj);
+      setBoolean(!boolean);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+
+  const viewAgent = async (id) => {
+    console.log(id);
+    const fetchTickets = async (filterData) => {
+      try {
+        const response = await MakeApiCall(
+          "POST",
+          "/api/get-tickets",
+          filterData
+        );
+        //console.log(response.data);
+        setAgentTickets(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchTickets({ assignedTo: id });
+    openAgentTicketModal();
+  };
+
+  const updateTicket = async (id) => {
+    //console.log(id);
+    try {
+      const response = await MakeApiCall("PATCH", "/api/update-tickets", {
+        ticketId: id,
+      });
+
+      setBoolean(!boolean);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await MakeApiCall("GET", "/api/get-agents");
+
+        //console.log("Received data:", response.data);
+        setAgents(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchTickets();
+  }, [boolean]);
 
   return (
     <div className="bg-gray-200 container mx-auto p-4">
       <div className="lg:px-4 flex items-center justify-center lg:justify-start">
         {" "}
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={openTicketModal}
-        >
-          Create Ticket
-        </button>
         <button
           className="ml-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={openAgentModal}
@@ -109,14 +104,6 @@ const Agents = () => {
       </div>
 
       <ModalWrapper
-        isOpen={isTicketModalOpen}
-        onClose={closeTicketModal}
-        label="Create Ticket Modal"
-      >
-        <TicketForm onSubmit={submitTicketForm} onClose={closeTicketModal} />
-      </ModalWrapper>
-
-      <ModalWrapper
         isOpen={isAgentModalOpen}
         onClose={closeAgentModal}
         label="Create Agent Modal"
@@ -124,30 +111,30 @@ const Agents = () => {
         <AgentForm onSubmit={submitAgentForm} onClose={closeAgentModal} />
       </ModalWrapper>
 
-      <FilterModal
-        isOpen={isFilterModalOpen}
-        onClose={closeFilterModal}
-        onSubmit={applyFilters}
-      />
-      <div className="flex items-center justify-between px-5 my-8">
-        {" "}
-        <h2 className="text-3xl text-blue-900 font-bold  flex items-center  space-x-2">
-          Support Tickets
-        </h2>{" "}
-        <div
-          className=" cursor-pointer underline text-blue-800  text-xl"
-          onClick={openFilterModal}
-        >
-          Filters
-        </div>
-      </div>
+      <ModalWrapper
+        isOpen={isAgentTicketModalOpen}
+        onClose={closeAgentTicketModal}
+        label="Create Agent Modal"
+      >
+        {agentTickets.length > 0 ? (
+          agentTickets.map((ticket, index) => (
+            <AgentTicket
+              key={index}
+              ticket={ticket}
+              updateTicket={updateTicket}
+            />
+          ))
+        ) : (
+          <p>No tickets available.</p>
+        )}
+      </ModalWrapper>
 
-      {tickets.length > 0 ? (
-        tickets.map((ticket, index) => (
-          <TicketCard key={index} ticket={ticket} />
+      {agents.length > 0 ? (
+        agents.map((agent, index) => (
+          <AgentCard key={index} agent={agent} viewAgent={viewAgent} />
         ))
       ) : (
-        <p>No tickets available.</p>
+        <p>No Agents available.</p>
       )}
     </div>
   );
