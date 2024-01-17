@@ -21,56 +21,101 @@ const TicketForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <div>
-      <h2>Create Ticket</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Topic:
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold pb-2 border-b-2 border-gray-400 inline-block">
+          Create Ticket
+        </h2>
+        <button onClick={onClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-x"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>{" "}
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="space-y-2">
+          <label>Topic:</label>
           <input
             type="text"
             name="topic"
             value={ticketForm.topic}
             onChange={handleTicketChange}
-            required
+            placeholder="Enter topic here"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
           />
-        </label>
-        <br />
-        <label>
-          Description:
-          <input
+        </div>
+
+        <div className="space-y-2">
+          <label>Description:</label>
+          <textarea
+            multiline
             type="text"
             name="description"
             value={ticketForm.description}
             onChange={handleTicketChange}
-            required
+            placeholder="Enter description here"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
           />
-        </label>
-        <br />
-        <label>
-          Severity:
-          <input
-            type="text"
+        </div>
+
+        <div className="space-y-2">
+          <label>Severity:</label>
+          {/* Replace the input with a select element for Severity */}
+          <select
             name="severity"
             value={ticketForm.severity}
             onChange={handleTicketChange}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Type:
-          <input
-            type="text"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
+          >
+            <option value="" disabled>
+              Select Severity
+            </option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label>Type:</label>
+          {/* Replace the input with a select element for Type */}
+          <select
             name="type"
             value={ticketForm.type}
             onChange={handleTicketChange}
-            required
-          />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
+          >
+            <option value="" disabled>
+              Select Type
+            </option>
+            <option value="Bug">Bug</option>
+            <option value="Feature">Feature</option>
+            <option value="Enhancement">Enhancement</option>
+          </select>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            className="py-2 px-6 bg-blue-500 text-white rounded-2xl text-lg font-semibold"
+          >
+            Submit
+          </button>
+        </div>
       </form>
-      <button onClick={onClose}>Close</button>
     </div>
   );
 };

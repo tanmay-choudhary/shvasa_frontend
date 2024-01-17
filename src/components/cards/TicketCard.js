@@ -1,16 +1,42 @@
 import React from "react";
 
 const TicketCard = ({ ticket }) => {
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   return (
-    <div className="border border-blue-500 p-4 m-4 rounded-lg">
+    <div className="bg-white border border-blue-400 shadow-md p-4 m-4 rounded-lg space-y-4">
+      {/*  <h1 className="text-2xl font-bold ">
+        <span className="text-blue-500 bg-blue-100 rounded-full px-5 py-2">
+          {ticket?.id}
+        </span>
+  </h1> */}
+
       <h3 className="text-xl font-bold mb-2">{ticket.topic}</h3>
-      <p className="mb-2">Description: {ticket.description}</p>
-      <p className="mb-2">Severity: {ticket.severity}</p>
-      <p className="mb-2">Type: {ticket.type}</p>
-      <p className="mb-2">Status: {ticket.status}</p>
-      <p className="mb-2">Assigned To: {ticket.assignedTo}</p>
+      <p className=" font-medium">
+        Description: <span className="font-normal">{ticket.description}</span>
+      </p>
+      <p className=" font-medium">
+        Severity: <span className="font-normal">{ticket.severity}</span>
+      </p>
+      <p className=" font-medium">
+        Type: <span className="font-normal">{ticket.type}</span>
+      </p>
+      <p className=" font-medium">
+        Status: <span className="font-normal">{ticket.status}</span>
+      </p>
+      <p className=" font-medium">
+        Assigned To: <span className="font-normal">{ticket.assignedTo}</span>
+      </p>
+      <p className="font-medium">
+        Created On:{" "}
+        <span className="font-normal">{formatDate(ticket.dateCreated)}</span>
+      </p>
       {ticket.resolvedOn && (
-        <p className="mb-2">Resolved On: {ticket.resolvedOn}</p>
+        <p className=" font-medium">
+          Resolved On: <span className="font-normal">{ticket.resolvedOn}</span>
+        </p>
       )}
     </div>
   );
