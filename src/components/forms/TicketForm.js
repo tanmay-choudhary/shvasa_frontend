@@ -73,7 +73,6 @@ const TicketForm = ({ onSubmit, onClose }) => {
 
         <div className="space-y-2">
           <label>Severity:</label>
-          {/* Replace the input with a select element for Severity */}
           <select
             name="severity"
             value={ticketForm.severity}
@@ -91,7 +90,6 @@ const TicketForm = ({ onSubmit, onClose }) => {
 
         <div className="space-y-2">
           <label>Type:</label>
-          {/* Replace the input with a select element for Type */}
           <select
             name="type"
             value={ticketForm.type}

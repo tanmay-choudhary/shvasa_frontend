@@ -77,7 +77,7 @@ const Agents = () => {
   };
 
   useEffect(() => {
-    const fetchTickets = async () => {
+    const fetchAgents = async () => {
       try {
         const response = await MakeApiCall("GET", "/api/get-agents");
 
@@ -88,7 +88,7 @@ const Agents = () => {
       }
     };
 
-    fetchTickets();
+    fetchAgents();
   }, [boolean]);
 
   return (

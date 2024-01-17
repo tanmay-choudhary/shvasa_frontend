@@ -13,6 +13,7 @@ const Tickets = () => {
   const [boolean, setBoolean] = useState(true);
   const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
   const [successModalData, setSuccessModalData] = useState({});
+  const [agents, setAgents] = useState([]);
 
   const openTicketModal = () => setTicketModalOpen(true);
   const closeTicketModal = () => setTicketModalOpen(false);
@@ -101,6 +102,20 @@ const Tickets = () => {
 
     fetchTickets();
   }, [boolean]);
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await MakeApiCall("GET", "/api/get-agents");
+
+        //console.log("Received data:", response.data);
+        setAgents(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAgents();
+  }, [boolean]);
   return (
     <div className="bg-gray-200 container mx-auto p-4">
       <div className="lg:px-4 flex items-center justify-center lg:justify-start">
@@ -133,7 +148,6 @@ const Tickets = () => {
           <p>Email: {successModalData.email}</p>
           <p>Phone: {successModalData.phone}</p>
           <p>Description: {successModalData.description}</p>
-          {/* Add more details as needed */}
         </div>
       </ModalWrapper>
 
@@ -141,6 +155,7 @@ const Tickets = () => {
         isOpen={isFilterModalOpen}
         onClose={closeFilterModal}
         onSubmit={applyFilters}
+        agents={agents}
       />
       <div className="flex items-center justify-between px-5 my-8">
         {" "}

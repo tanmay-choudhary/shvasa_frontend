@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ModalWrapper from "../ModalWrapper";
 
-const FilterModal = ({ isOpen, onClose, onSubmit }) => {
+const FilterModal = ({ isOpen, onClose, onSubmit, agents }) => {
   const [filterData, setFilterData] = useState({
     status: "",
     assignedTo: "",
@@ -52,7 +52,11 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
               className="form-select mt-1 block w-full"
             >
               <option value="">--Select--</option>
-              {/* Populate options based on your data */}
+              {agents.map((agent) => (
+                <option key={agent._id} value={agent._id}>
+                  {agent.name}
+                </option>
+              ))}
             </select>
           </label>
         </div>
