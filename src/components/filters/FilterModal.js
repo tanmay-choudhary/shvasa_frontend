@@ -29,49 +29,63 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
         <div className="mb-4">
           <label className="block mb-2">
             Status:
-            <input
-              type="text"
+            <select
               name="status"
               value={filterData.status}
               onChange={handleChange}
-              className="form-input mt-1 block w-full"
-            />
+              className="form-select mt-1 block w-full"
+            >
+              <option value="">--Select--</option>
+              <option value="New">New</option>
+              <option value="Assigned">Assigned</option>
+              <option value="Resolved">Resolved</option>
+            </select>
           </label>
         </div>
         <div className="mb-4">
           <label className="block mb-2">
-            AssignedTo:
-            <input
-              type="text"
+            Assigned To:
+            <select
               name="assignedTo"
               value={filterData.assignedTo}
               onChange={handleChange}
-              className="form-input mt-1 block w-full"
-            />
+              className="form-select mt-1 block w-full"
+            >
+              <option value="">--Select--</option>
+              {/* Populate options based on your data */}
+            </select>
           </label>
         </div>
         <div className="mb-4">
           <label className="block mb-2">
             Severity:
-            <input
-              type="text"
+            <select
               name="severity"
               value={filterData.severity}
               onChange={handleChange}
-              className="form-input mt-1 block w-full"
-            />
+              className="form-select mt-1 block w-full"
+            >
+              <option value="">--Select--</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
           </label>
         </div>
         <div className="mb-4">
           <label className="block mb-2">
             Type:
-            <input
-              type="text"
+            <select
               name="type"
               value={filterData.type}
               onChange={handleChange}
-              className="form-input mt-1 block w-full"
-            />
+              className="form-select mt-1 block w-full"
+            >
+              <option value="">--Select--</option>
+              <option value="Bug">Bug</option>
+              <option value="Feature">Feature</option>
+              <option value="Enhancement">Enhancement</option>
+            </select>
           </label>
         </div>
         <div className="mb-4">

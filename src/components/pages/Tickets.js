@@ -65,38 +65,26 @@ const Tickets = () => {
   };
 
   const applyFilters = (filterData) => {
-    console.log("Applying Filters:", filterData);
-    const filteredTickets = tickets.filter((ticket) => {
-      return (
-        (filterData.status
-          ? ticket.status.includes(filterData.status)
-          : true) &&
-        (filterData.assignedTo
-          ? ticket.assignedTo.includes(filterData.assignedTo)
-          : true) &&
-        (filterData.severity
-          ? ticket.severity.includes(filterData.severity)
-          : true) &&
-        (filterData.type ? ticket.type.includes(filterData.type) : true)
-      );
-    });
+    //console.log("Applying Filters:", filterData);
+    const fetchTickets = async (filterData) => {
+      try {
+        const response = await MakeApiCall(
+          "POST",
+          "/api/get-tickets",
+          filterData
+        );
 
-    const sortedTickets = filteredTickets.sort((a, b) => {
-      if (filterData.sortField === "resolvedOn") {
-        return (
-          new Date(b.resolvedOn || 0).getTime() -
-          new Date(a.resolvedOn || 0).getTime()
-        );
-      } else if (filterData.sortField === "dateCreated") {
-        return (
-          new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
-        );
+        //console.log("Received data:", response.data);
+        setTickets(response.data);
+
+        closeFilterModal();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        closeFilterModal();
       }
-      return 0;
-    });
+    };
 
-    setTickets(sortedTickets);
-    closeFilterModal();
+    fetchTickets(filterData);
   };
 
   useEffect(() => {
