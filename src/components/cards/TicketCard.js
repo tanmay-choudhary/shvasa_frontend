@@ -9,12 +9,7 @@ const TicketCard = ({ ticket, assignTicket }) => {
   return (
     <div className="bg-white border border-blue-400 shadow-md p-4 m-4 rounded-lg space-y-4 relative">
       {ticket.assignedTo ? (
-        <button
-          className="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded-full"
-          disabled={true}
-        >
-          Assigned
-        </button>
+        <></>
       ) : (
         <button
           className="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded-full"
@@ -40,7 +35,7 @@ const TicketCard = ({ ticket, assignTicket }) => {
         Status: <span className="font-normal">{ticket.status}</span>
       </p>
       <p className="font-medium">
-        Assigned To: <span className="font-normal">{ticket.assignedTo}</span>
+        Assigned To: <span className="font-normal">{ticket.agentName}</span>
       </p>
       <p className="font-medium">
         Created On:{" "}
