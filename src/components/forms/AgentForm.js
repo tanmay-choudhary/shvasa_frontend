@@ -32,7 +32,7 @@ const AgentForm = ({ onSubmit, onClose }) => {
             name="name"
             value={agentForm.name}
             onChange={handleAgentChange}
-            className="form-input mt-1 block w-full"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
             required
           />
         </label>
@@ -44,7 +44,7 @@ const AgentForm = ({ onSubmit, onClose }) => {
             name="email"
             value={agentForm.email}
             onChange={handleAgentChange}
-            className="form-input mt-1 block w-full"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
             required
           />
         </label>
@@ -56,7 +56,7 @@ const AgentForm = ({ onSubmit, onClose }) => {
             name="phone"
             value={agentForm.phone}
             onChange={handleAgentChange}
-            className="form-input mt-1 block w-full"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
             required
           />
         </label>
@@ -68,7 +68,7 @@ const AgentForm = ({ onSubmit, onClose }) => {
             name="description"
             value={agentForm.description}
             onChange={handleAgentChange}
-            className="form-input mt-1 block w-full"
+            className="w-full px-3 py-2 border border-gray-700 bg-gray-200 rounded-lg shadow-sm focus:outline-none"
             required
           />
         </label>

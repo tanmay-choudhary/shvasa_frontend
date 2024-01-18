@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ModalWrapper from "../ModalWrapper";
 import TicketForm from "../forms/TicketForm";
 import TicketCard from "../cards/TicketCard";
@@ -9,12 +10,13 @@ import "tailwindcss/tailwind.css";
 const Tickets = () => {
   const [isTicketModalOpen, setTicketModalOpen] = useState(false);
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [tickets, setTickets] = useState([]);
   const [boolean, setBoolean] = useState(true);
   const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
   const [successModalData, setSuccessModalData] = useState({});
   const [agents, setAgents] = useState([]);
+  const navigate = useNavigate();
 
   const openTicketModal = () => setTicketModalOpen(true);
   const closeTicketModal = () => setTicketModalOpen(false);
@@ -22,6 +24,9 @@ const Tickets = () => {
   const openFilterModal = () => setFilterModalOpen(true);
   const closeFilterModal = () => setFilterModalOpen(false);
 
+  const openAgents = () => {
+    navigate("/agents");
+  };
   const submitTicketForm = async (ticketData) => {
     let date = new Date();
     let obj = {
@@ -34,12 +39,14 @@ const Tickets = () => {
 
     try {
       setLoading(true);
+      console.log("ii");
       const response = await MakeApiCall("POST", "/api/support-tickets", obj);
-      setBoolean(!boolean);
-      closeTicketModal();
+      console.log("ii");
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
+      setBoolean(!boolean);
+      closeTicketModal();
       setLoading(false);
     }
   };
@@ -117,12 +124,18 @@ const Tickets = () => {
 
   return (
     <div className="bg-gray-200 container mx-auto p-4">
-      <div className="lg:px-4 flex items-center justify-center lg:justify-start">
+      <div className="lg:px-4 flex items-center justify-center lg:justify-start space-x-4">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={openTicketModal}
         >
           Create Ticket
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={openAgents}
+        >
+          Open Agents
         </button>
       </div>
 

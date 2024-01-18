@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ModalWrapper from "../ModalWrapper";
 import AgentForm from "../forms/AgentForm";
 import AgentCard from "../cards/AgentCard";
@@ -9,16 +10,20 @@ import "tailwindcss/tailwind.css";
 const Agents = () => {
   const [isAgentModalOpen, setAgentModalOpen] = useState(false);
   const [isAgentTicketModalOpen, setAgentTicketModalOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [boolean, setBoolean] = useState(true);
   const [agents, setAgents] = useState([]);
   const [agentTickets, setAgentTickets] = useState([]);
+  const navigate = useNavigate();
 
   const openAgentModal = () => setAgentModalOpen(true);
   const closeAgentModal = () => setAgentModalOpen(false);
   const openAgentTicketModal = () => setAgentTicketModalOpen(true);
   const closeAgentTicketModal = () => setAgentTicketModalOpen(false);
 
+  const openTickets = () => {
+    navigate("/tickets");
+  };
   const submitAgentForm = async (agentData) => {
     let date = new Date();
     let obj = {
@@ -38,10 +43,10 @@ const Agents = () => {
     try {
       setLoading(true);
       const response = await MakeApiCall("POST", "/api/support-agents", obj);
-      setBoolean(!boolean);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
+      setBoolean(!boolean);
       setLoading(false);
     }
   };
@@ -99,12 +104,18 @@ const Agents = () => {
 
   return (
     <div className="bg-gray-200 container mx-auto p-4">
-      <div className="lg:px-4 flex items-center justify-center lg:justify-start">
+      <div className="lg:px-4 flex items-center justify-center lg:justify-start space-x-4">
         <button
           className="ml-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={openAgentModal}
         >
           Create Agent
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={openTickets}
+        >
+          Open Tickets
         </button>
       </div>
 
