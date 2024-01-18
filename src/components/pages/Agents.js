@@ -9,6 +9,7 @@ import "tailwindcss/tailwind.css";
 const Agents = () => {
   const [isAgentModalOpen, setAgentModalOpen] = useState(false);
   const [isAgentTicketModalOpen, setAgentTicketModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [boolean, setBoolean] = useState(true);
   const [agents, setAgents] = useState([]);
   const [agentTickets, setAgentTickets] = useState([]);
@@ -17,8 +18,8 @@ const Agents = () => {
   const closeAgentModal = () => setAgentModalOpen(false);
   const openAgentTicketModal = () => setAgentTicketModalOpen(true);
   const closeAgentTicketModal = () => setAgentTicketModalOpen(false);
+
   const submitAgentForm = async (agentData) => {
-    //console.log("Submitting Agent Form:", agentData);
     let date = new Date();
     let obj = {
       name: agentData.name,
@@ -28,7 +29,6 @@ const Agents = () => {
       active: agentData.active,
       dateCreated: date,
     };
-    //console.log("Submitting Agent Form:", obj);
 
     await addAgents(obj);
     closeAgentModal();
@@ -36,26 +36,30 @@ const Agents = () => {
 
   const addAgents = async (obj) => {
     try {
+      setLoading(true);
       const response = await MakeApiCall("POST", "/api/support-agents", obj);
       setBoolean(!boolean);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const viewAgent = async (id) => {
-    console.log(id);
     const fetchTickets = async (filterData) => {
       try {
+        setLoading(true);
         const response = await MakeApiCall(
           "POST",
           "/api/get-tickets",
           filterData
         );
-        //console.log(response.data);
         setAgentTickets(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -64,27 +68,29 @@ const Agents = () => {
   };
 
   const updateTicket = async (id) => {
-    //console.log(id);
     try {
+      setLoading(true);
       const response = await MakeApiCall("PATCH", "/api/update-tickets", {
         ticketId: id,
       });
-
       setBoolean(!boolean);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchAgents = async () => {
       try {
+        setLoading(true);
         const response = await MakeApiCall("GET", "/api/get-agents");
-
-        //console.log("Received data:", response.data);
         setAgents(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -94,7 +100,6 @@ const Agents = () => {
   return (
     <div className="bg-gray-200 container mx-auto p-4">
       <div className="lg:px-4 flex items-center justify-center lg:justify-start">
-        {" "}
         <button
           className="ml-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={openAgentModal}
@@ -116,7 +121,11 @@ const Agents = () => {
         onClose={closeAgentTicketModal}
         label="Create Agent Modal"
       >
-        {agentTickets.length > 0 ? (
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
+        ) : agentTickets.length > 0 ? (
           agentTickets.map((ticket, index) => (
             <AgentTicket
               key={index}
@@ -129,7 +138,11 @@ const Agents = () => {
         )}
       </ModalWrapper>
 
-      {agents.length > 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      ) : agents.length > 0 ? (
         agents.map((agent, index) => (
           <AgentCard key={index} agent={agent} viewAgent={viewAgent} />
         ))
