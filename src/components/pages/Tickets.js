@@ -57,14 +57,15 @@ const Tickets = () => {
       const response = await MakeApiCall("PATCH", "/api/assign-tickets", {
         ticketId: id,
       });
-
-      setSuccessModalData(response.data);
-      setSuccessModalOpen(true);
-      setBoolean(!boolean);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      // setSuccessModalData(response.data);
+      // setSuccessModalOpen(true);
+      setTimeout(() => {
+        setBoolean(!boolean);
+        setLoading(false);
+      }, [4000]);
     }
   };
 

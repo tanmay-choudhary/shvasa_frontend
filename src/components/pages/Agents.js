@@ -78,10 +78,11 @@ const Agents = () => {
       const response = await MakeApiCall("PATCH", "/api/update-tickets", {
         ticketId: id,
       });
-      setBoolean(!boolean);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
+      setBoolean(!boolean);
+      closeAgentTicketModal();
       setLoading(false);
     }
   };
